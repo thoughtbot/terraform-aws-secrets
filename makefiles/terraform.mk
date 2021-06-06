@@ -1,7 +1,7 @@
 MODULEFILES := $(wildcard *.tf)
 
 .PHONY: default
-default: checkfmt validate
+default: checkfmt validate docs
 
 .PHONY: checkfmt
 checkfmt: .fmt
@@ -13,6 +13,12 @@ fmt: $(MODULEFILES)
 
 .PHONY: validate
 validate: .validate
+
+.PHONY: docs
+docs: README.md
+
+README.md: $(MODULEFILES)
+	terraform-docs markdown table . --output-file README.md
 
 .fmt: $(MODULEFILES)
 	terraform fmt -check
