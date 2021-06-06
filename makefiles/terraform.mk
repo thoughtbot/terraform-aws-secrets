@@ -1,7 +1,8 @@
+TFLINTRC    := ../../.tflint.hcl
 MODULEFILES := $(wildcard *.tf)
 
 .PHONY: default
-default: checkfmt validate docs
+default: checkfmt validate docs lint
 
 .PHONY: checkfmt
 checkfmt: .fmt
@@ -17,6 +18,17 @@ validate: .validate
 .PHONY: docs
 docs: README.md
 
+.PHONY: lint
+lint: .lint
+
+.lint: $(MODULEFILES) .lintinit
+	tflint --config=$(TFLINTRC)
+	@touch .lint
+
+.lintinit: $(TFLINTRC)
+	tflint --init --config=$(TFLINTRC)
+	@touch .lintinit
+
 README.md: $(MODULEFILES)
 	terraform-docs markdown table . --output-file README.md
 
@@ -25,15 +37,16 @@ README.md: $(MODULEFILES)
 	@touch .fmt
 
 .PHONY: init
-init: .terraform
+init: .init
 
-.terraform: providers.tf.json
+.init: providers.tf.json
 	terraform init -backend=false
+	@touch .init
 
-.validate: .terraform $(MODULEFILES)
+.validate: .init $(MODULEFILES)
 	AWS_DEFAULT_REGION=us-east-1 terraform validate
 	@touch .validate
 
 .PHONY: clean
 clean:
-	rm -rf .fmt .terraform .validate
+	rm -rf .fmt .init .lint .lintinit .terraform .validate
