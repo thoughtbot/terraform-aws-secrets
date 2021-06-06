@@ -1,16 +1,21 @@
 MODULEFILES := $(wildcard *.tf)
 
 .PHONY: default
-default: .fmt .validate
+default: checkfmt validate
+
+.PHONY: checkfmt
+checkfmt: .fmt
 
 .PHONY: fmt
-fmt: .fmt
+fmt: $(MODULEFILES)
+	terraform fmt
+	@touch .fmt
 
 .PHONY: validate
-fmt: .validate
+validate: .validate
 
 .fmt: $(MODULEFILES)
-	terraform fmt
+	terraform fmt -check
 	@touch .fmt
 
 .PHONY: init
