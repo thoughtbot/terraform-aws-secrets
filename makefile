@@ -8,7 +8,7 @@ MAKEMODULES     := $(foreach module,$(MODULES),$(module)/default)
 CLEANMODULES    := $(foreach module,$(MODULES),$(module)/clean)
 
 .PHONY: default
-default: modules
+default: modules index
 
 .PHONY: fmt
 fmt:
@@ -34,6 +34,12 @@ $(CLEANMODULES): %/clean:
 
 .PHONY: clean
 clean: $(CLEANMODULES)
+
+.PHONY: index
+index: README.md
+
+README.md: */*/README.md
+	./bin/reindex
 
 .terraformrc:
 	mkdir -p .terraform-plugins
