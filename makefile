@@ -34,6 +34,7 @@ $(CLEANMODULES): %/clean:
 
 .PHONY: clean
 clean: $(CLEANMODULES)
+	rm -rf .terraform-plugins .terraformrc
 
 .PHONY: index
 index: README.md
