@@ -8,9 +8,9 @@ output "name" {
   value       = aws_secretsmanager_secret.this.name
 }
 
-output "policy_arn" {
-  description = "ARN of the policy created for consuming this secret"
-  value       = aws_iam_policy.read_secret.arn
+output "policy_json" {
+  description = "Policy json for consuming this secret"
+  value       = data.aws_iam_policy_document.read_secret.json
 }
 
 output "rotation_role_arn" {

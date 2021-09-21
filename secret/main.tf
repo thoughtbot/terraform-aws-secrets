@@ -109,15 +109,9 @@ data "aws_iam_policy_document" "key" {
   }
 }
 
-resource "aws_iam_policy" "read_secret" {
-  name   = "${var.name}-consumer"
-  policy = data.aws_iam_policy_document.read_secret.json
-  tags   = var.resource_tags
-}
-
 data "aws_iam_policy_document" "read_secret" {
   statement {
-    sid = "ReadSecret"
+    sid = "ReadSecret${local.sid_suffix}"
     actions = [
       "secretsmanager:DescribeSecret",
       "secretsmanager:GetSecretValue"
@@ -126,7 +120,7 @@ data "aws_iam_policy_document" "read_secret" {
   }
 
   statement {
-    sid = "DecryptSecret"
+    sid = "DecryptSecret${local.sid_suffix}"
     actions = [
       "kms:Decrypt"
     ]
@@ -195,5 +189,6 @@ locals {
   account_arn     = "arn:aws:iam::${local.account_id}:root"
   account_id      = data.aws_caller_identity.this.account_id
   region          = data.aws_region.this.name
+  sid_suffix      = join("", regexall("[[:alnum:]]+", var.name))
   trust_principal = coalesce(var.trust_principal, local.account_arn)
 }
