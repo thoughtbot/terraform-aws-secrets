@@ -58,6 +58,8 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_arn"></a> [arn](#output\_arn) | ARN of the created secret |
+| <a name="output_kms_key_alias"></a> [kms\_key\_alias](#output\_kms\_key\_alias) | Alias of the KMS key encrypting the secret |
+| <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | Alias of the KMS key encrypting the secret |
 | <a name="output_name"></a> [name](#output\_name) | Name of the created secret |
 | <a name="output_policy_json"></a> [policy\_json](#output\_policy\_json) | Policy json for consuming this secret |
 | <a name="output_rotation_role_arn"></a> [rotation\_role\_arn](#output\_rotation\_role\_arn) | ARN of the IAM role allowed to rotate this secret |
