@@ -32,3 +32,8 @@ output "rotation_role_name" {
   description = "Name of the IAM role allowed to rotate this secret"
   value       = aws_iam_role.rotation.name
 }
+
+output "id" {
+  description = "id of the created secret"
+  value       = aws_secretsmanager_secret.this.id
+}
