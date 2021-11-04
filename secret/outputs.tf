@@ -34,6 +34,6 @@ output "rotation_role_name" {
 }
 
 output "id" {
-  description = "id of the created secret"
+  description = "Id of the created secret"
   value       = aws_secretsmanager_secret.this.id
 }
