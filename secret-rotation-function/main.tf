@@ -12,6 +12,7 @@ resource "aws_lambda_function" "rotation" {
   filename         = data.archive_file.function.output_path
   function_name    = local.secret_id
   handler          = var.handler
+  layers           = values(aws_lambda_layer_version.dependencies).*.arn
   role             = var.role_arn
   runtime          = var.runtime
   source_code_hash = data.archive_file.function.output_base64sha256
@@ -46,6 +47,16 @@ resource "aws_lambda_permission" "secretsmanager" {
   function_name = aws_lambda_function.rotation.function_name
   principal     = "secretsmanager.amazonaws.com"
   statement_id  = "AllowSecretManager"
+}
+
+resource "aws_lambda_layer_version" "dependencies" {
+  for_each = var.dependencies
+
+  compatible_runtimes = [var.runtime]
+  description         = "${each.key} for ${local.secret_id}"
+  filename            = each.value
+  layer_name          = "${local.secret_id}-${each.key}"
+  source_code_hash    = filebase64sha256(each.value)
 }
 
 resource "aws_iam_role_policy_attachment" "function_vpc" {

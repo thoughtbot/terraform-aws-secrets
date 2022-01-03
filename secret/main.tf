@@ -170,6 +170,14 @@ data "aws_iam_policy_document" "rotation" {
   }
 
   statement {
+    sid = "GetRandomPassword"
+    actions = [
+      "secretsmanager:GetRandomPassword",
+    ]
+    resources = ["*"]
+  }
+
+  statement {
     sid = "UseKey"
     actions = [
       "kms:Encrypt",

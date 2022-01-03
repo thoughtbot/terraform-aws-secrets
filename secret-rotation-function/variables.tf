@@ -1,3 +1,9 @@
+variable "dependencies" {
+  type        = map(string)
+  default     = {}
+  description = "Map of zip archives containing dependencies"
+}
+
 variable "rotation_days" {
   description = "Number of days after which the secret is rotated"
   type        = number

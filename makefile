@@ -8,11 +8,14 @@ MAKEMODULES     := $(foreach module,$(MODULES),$(module)/default)
 CLEANMODULES    := $(foreach module,$(MODULES),$(module)/clean)
 
 .PHONY: default
-default: modules index
+default: layers modules index
 
 .PHONY: fmt
 fmt:
 	terraform fmt -recursive
+
+.PHONY: layers
+layers: aws/rds-postgres-login/rotation/postgres.zip
 
 .PHONY: modules
 modules: makefiles makemodules
@@ -34,7 +37,7 @@ $(CLEANMODULES): %/clean:
 
 .PHONY: clean
 clean: $(CLEANMODULES)
-	rm -rf .terraform-plugins .terraformrc
+	rm -rf .terraform-plugins .terraformrc tmp
 
 .PHONY: index
 index: README.md
@@ -45,3 +48,9 @@ README.md: */*/README.md
 .terraformrc:
 	mkdir -p .terraform-plugins
 	echo 'plugin_cache_dir = "$(CURDIR)/.terraform-plugins"' > .terraformrc
+
+%/postgres.zip: layers/postgres/package.zip
+	cp "$<" "$@"
+
+layers/%/package.zip: layers/%/*
+	$(MAKE) -C layers/"$*"

@@ -28,6 +28,7 @@ No modules.
 |------|------|
 | [aws_iam_role_policy_attachment.function_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_lambda_function.rotation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
+| [aws_lambda_layer_version.dependencies](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_layer_version) | resource |
 | [aws_lambda_permission.secretsmanager](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_secretsmanager_secret_rotation.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_rotation) | resource |
 | [archive_file.function](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
@@ -37,6 +38,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_dependencies"></a> [dependencies](#input\_dependencies) | Map of zip archives containing dependencies | `map(string)` | `{}` | no |
 | <a name="input_handler"></a> [handler](#input\_handler) | Handler to invoke in the function package | `string` | n/a | yes |
 | <a name="input_role_arn"></a> [role\_arn](#input\_role\_arn) | ARN of the IAM role capable of rotating the secret | `string` | n/a | yes |
 | <a name="input_rotation_days"></a> [rotation\_days](#input\_rotation\_days) | Number of days after which the secret is rotated | `number` | `30` | no |
