@@ -89,6 +89,21 @@ data "aws_iam_policy_document" "key" {
   }
 
   statement {
+    sid = "AllowRotation"
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*"
+    ]
+    resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = [aws_iam_role.rotation.arn]
+    }
+  }
+
+  statement {
     sid = "AllowSecretsManager"
     actions = [
       "kms:Encrypt",
@@ -98,7 +113,7 @@ data "aws_iam_policy_document" "key" {
     ]
     resources = ["*"]
     principals {
-      identifiers = [local.account_arn]
+      identifiers = [local.trust_principal]
       type        = "AWS"
     }
     condition {
