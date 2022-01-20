@@ -1,3 +1,9 @@
+variable "admin_principals" {
+  description = "Principals allowed to peform admin actions (default: current account)"
+  type        = list(string)
+  default     = null
+}
+
 variable "initial_value" {
   description = "Initial value for this secret"
   type        = string
@@ -14,6 +20,12 @@ variable "name" {
   type        = string
 }
 
+variable "read_principals" {
+  description = "Principals allowed to read the secret (default: current account)"
+  type        = list(string)
+  default     = null
+}
+
 variable "resource_tags" {
   description = "Tags to be applied to created resources"
   type        = map(string)
@@ -28,12 +40,6 @@ variable "rotation_trust_policy" {
 
 variable "secret_policy" {
   description = "Overrides for the secret resource policy"
-  type        = string
-  default     = null
-}
-
-variable "trust_principal" {
-  description = "Principal allowed to access the secret (default: current account)"
   type        = string
   default     = null
 }

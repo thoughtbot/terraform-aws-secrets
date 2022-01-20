@@ -44,13 +44,14 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_admin_principals"></a> [admin\_principals](#input\_admin\_principals) | Principals allowed to peform admin actions (default: current account) | `list(string)` | `null` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description for this secret | `string` | `null` | no |
 | <a name="input_initial_value"></a> [initial\_value](#input\_initial\_value) | Initial value for this secret | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name for this secret | `string` | n/a | yes |
+| <a name="input_read_principals"></a> [read\_principals](#input\_read\_principals) | Principals allowed to read the secret (default: current account) | `list(string)` | `null` | no |
 | <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Tags to be applied to created resources | `map(string)` | `{}` | no |
 | <a name="input_rotation_trust_policy"></a> [rotation\_trust\_policy](#input\_rotation\_trust\_policy) | Overrides for the rotation role trust policy | `string` | `null` | no |
 | <a name="input_secret_policy"></a> [secret\_policy](#input\_secret\_policy) | Overrides for the secret resource policy | `string` | `null` | no |
-| <a name="input_trust_principal"></a> [trust\_principal](#input\_trust\_principal) | Principal allowed to access the secret (default: current account) | `string` | `null` | no |
 | <a name="input_trust_tags"></a> [trust\_tags](#input\_trust\_tags) | Tags required on principals accessing the secret | `map(string)` | `{}` | no |
 
 ## Outputs

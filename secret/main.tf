@@ -14,6 +14,19 @@ data "aws_iam_policy_document" "secret" {
   override_json = var.secret_policy
 
   statement {
+    sid       = "AllowAdmin"
+    resources = ["*"]
+    not_actions = [
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:GetSecretValue",
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = local.admin_principals
+    }
+  }
+
+  statement {
     sid       = "AllowRotation"
     resources = ["*"]
     actions = [
@@ -37,7 +50,7 @@ data "aws_iam_policy_document" "secret" {
     ]
     principals {
       type        = "AWS"
-      identifiers = [local.trust_principal]
+      identifiers = local.read_principals
     }
     dynamic "condition" {
       for_each = var.trust_tags
@@ -74,7 +87,7 @@ resource "aws_kms_alias" "this" {
 
 data "aws_iam_policy_document" "key" {
   statement {
-    sid = "AllowManagement"
+    sid = "AllowAdmin"
     not_actions = [
       "kms:Encrypt",
       "kms:Decrypt",
@@ -83,7 +96,7 @@ data "aws_iam_policy_document" "key" {
     ]
     resources = ["*"]
     principals {
-      identifiers = [local.account_arn]
+      identifiers = local.admin_principals
       type        = "AWS"
     }
   }
@@ -104,7 +117,7 @@ data "aws_iam_policy_document" "key" {
   }
 
   statement {
-    sid = "AllowSecretsManager"
+    sid = "AllowRead"
     actions = [
       "kms:Encrypt",
       "kms:Decrypt",
@@ -113,7 +126,7 @@ data "aws_iam_policy_document" "key" {
     ]
     resources = ["*"]
     principals {
-      identifiers = [local.trust_principal]
+      identifiers = local.read_principals
       type        = "AWS"
     }
     condition {
@@ -209,9 +222,10 @@ data "aws_region" "this" {}
 data "aws_caller_identity" "this" {}
 
 locals {
-  account_arn     = "arn:aws:iam::${local.account_id}:root"
-  account_id      = data.aws_caller_identity.this.account_id
-  region          = data.aws_region.this.name
-  sid_suffix      = join("", regexall("[[:alnum:]]+", var.name))
-  trust_principal = coalesce(var.trust_principal, local.account_arn)
+  account_arn      = "arn:aws:iam::${local.account_id}:root"
+  account_id       = data.aws_caller_identity.this.account_id
+  region           = data.aws_region.this.name
+  sid_suffix       = join("", regexall("[[:alnum:]]+", var.name))
+  read_principals  = coalesce(var.read_principals, [local.account_arn])
+  admin_principals = coalesce(var.admin_principals, [local.account_arn])
 }
