@@ -1,6 +1,52 @@
 # Generic Secret
 
-Creates an AWS Secrets Manager secret without automatic rotation.
+Creates an [AWS Secrets Manager] secret with an initial value. A unique [KMS] is
+key is created with a policy that allows consumers to decrypt and allows the
+rotation function to encrypt.
+
+Example:
+
+``` terraform
+module "auth_token" {
+  source = "github.com/thoughtbot/terraform-aws-secrets//secret"
+
+  description   = "Auth token for managing client keys"
+  initial_value = random_string.auth_token.result
+  name          = "auth-token"
+}
+```
+
+## Permissions
+
+You can provide administrative and consumer principals:
+
+``` terraform
+admin_principals = [data.aws_iam_role.sso_admin_user.arn]
+read_principals  = [aws_iam_role.myservice.arn]
+```
+
+If you don't provide principals, permissions will be delegated to IAM, meaning
+that any user or role with the correct `secretsmanager:*` permissions will be
+able to use the secret.
+
+You can also implement tag-based ABAC by providing trust tags:
+
+``` terraform
+trust_tags = { Service = "myservice" }
+```
+
+This will include a condition in the trust policy that denies reading unless the
+principal has the corresponding tags.
+
+## Automatic Rotation
+
+Rotation is not configured, but a role suitable for a rotation function is
+created and available in the outputs. You can create your own rotation function
+using the [secret rotation function module].
+
+[AWS Secrets Manager]: https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html
+[KMS]: https://docs.aws.amazon.com/kms/latest/developerguide/overview.html
+[secret rotation function module]: ../secret-rotation-function
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements

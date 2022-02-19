@@ -1,6 +1,42 @@
 # Rotating Secret
 
-Creates an AWS Secrets Manager secret with automatic rotation.
+Creates a rotation function for a Secrets Manager secret. You can combine this
+with the [secret module] to create a secret with automatic rotation. You can
+read more about secret rotation in the [Secrets Manager developer guide].
+
+Example:
+
+``` terraform
+module "auth_token_rotation" {
+  source = "github.com/thoughtbot/terraform-aws-secrets//secret-rotation-function"
+
+  # Provide these outputs from the secret module
+  role_arn           = module.auth_token.rotation_role_arn
+  secret_arn         = module.auth_token.arn
+
+  # Tune these to match your handler function
+  handler            = "lambda_function.lambda_handler"
+  runtime            = "python3.8"
+  source_file        = "${path.module}/myfunction.py"
+
+  # Configure security groups and subnets for your VPC
+  security_group_ids = [aws_security_group.function.id]
+  subnet_ids         = aws_subnet.private.*.id
+
+  # You can provide Lambda layers as a map of archives
+  dependencies = {
+    postgres = "${path.module}/postgres.zip"
+  }
+
+  # Environment variables to add to the created function
+  variables = {
+    ACCOUNT_URL = "https://example.com"
+  }
+}
+```
+
+[secret module]: ../secret
+[Secrets Manager developer guide]: https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
