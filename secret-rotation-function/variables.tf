@@ -39,6 +39,7 @@ variable "secret_arn" {
 variable "security_group_ids" {
   description = "Security groups which the rotation function should use"
   type        = list(string)
+  default     = []
 }
 
 variable "source_file" {
@@ -49,4 +50,5 @@ variable "source_file" {
 variable "subnet_ids" {
   description = "Subnets in which this function should run"
   type        = list(string)
+  default     = []
 }

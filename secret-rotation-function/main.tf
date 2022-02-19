@@ -25,9 +25,13 @@ resource "aws_lambda_function" "rotation" {
     )
   }
 
-  vpc_config {
-    security_group_ids = var.security_group_ids
-    subnet_ids         = var.subnet_ids
+  dynamic "vpc_config" {
+    for_each = length(concat(var.security_group_ids, var.subnet_ids)) == 0 ? [] : [true]
+
+    content {
+      security_group_ids = var.security_group_ids
+      subnet_ids         = var.subnet_ids
+    }
   }
 
   depends_on = [

@@ -76,9 +76,9 @@ module "auth_token_rotation" {
 | <a name="input_rotation_days"></a> [rotation\_days](#input\_rotation\_days) | Number of days after which the secret is rotated | `number` | `30` | no |
 | <a name="input_runtime"></a> [runtime](#input\_runtime) | Runtime of the rotation function | `string` | n/a | yes |
 | <a name="input_secret_arn"></a> [secret\_arn](#input\_secret\_arn) | ARN of the secret to rotate | `string` | n/a | yes |
-| <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | Security groups which the rotation function should use | `list(string)` | n/a | yes |
+| <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | Security groups which the rotation function should use | `list(string)` | `[]` | no |
 | <a name="input_source_file"></a> [source\_file](#input\_source\_file) | File containing the rotatation handler | `string` | n/a | yes |
-| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | Subnets in which this function should run | `list(string)` | n/a | yes |
+| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | Subnets in which this function should run | `list(string)` | `[]` | no |
 | <a name="input_variables"></a> [variables](#input\_variables) | Environment variables for the rotation function | `map(string)` | `{}` | no |
 
 ## Outputs
