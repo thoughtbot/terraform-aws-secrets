@@ -54,10 +54,6 @@ module "auth_token_rotation" {
 | <a name="provider_archive"></a> [archive](#provider\_archive) | ~> 2.2 |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.45 |
 
-## Modules
-
-No modules.
-
 ## Resources
 
 | Name | Type |

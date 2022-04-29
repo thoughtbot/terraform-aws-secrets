@@ -4,6 +4,12 @@ variable "admin_principals" {
   default     = null
 }
 
+variable "create_rotation_role" {
+  description = "Set to false to use an existing IAM role for rotation"
+  type        = bool
+  default     = true
+}
+
 variable "initial_value" {
   description = "Initial value for this secret"
   type        = string
@@ -30,6 +36,12 @@ variable "resource_tags" {
   description = "Tags to be applied to created resources"
   type        = map(string)
   default     = {}
+}
+
+variable "rotation_role_name" {
+  description = "Override the name for the rotation role"
+  type        = string
+  default     = null
 }
 
 variable "rotation_trust_policy" {

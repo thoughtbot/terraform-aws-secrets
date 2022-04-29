@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "secret" {
     ]
     principals {
       type        = "AWS"
-      identifiers = [aws_iam_role.rotation.arn]
+      identifiers = [data.aws_iam_role.rotation.arn]
     }
   }
 
@@ -112,7 +112,7 @@ data "aws_iam_policy_document" "key" {
     resources = ["*"]
     principals {
       type        = "AWS"
-      identifiers = [aws_iam_role.rotation.arn]
+      identifiers = [data.aws_iam_role.rotation.arn]
     }
   }
 
@@ -157,14 +157,22 @@ data "aws_iam_policy_document" "read_secret" {
 }
 
 resource "aws_iam_role" "rotation" {
+  count = var.create_rotation_role ? 1 : 0
+
   assume_role_policy = data.aws_iam_policy_document.rotation_assume_role.json
-  name               = "${var.name}-rotation"
+  name               = local.rotation_role_name
   tags               = var.resource_tags
+}
+
+data "aws_iam_role" "rotation" {
+  name = local.rotation_role_name
+
+  depends_on = [aws_iam_role.rotation]
 }
 
 resource "aws_iam_role_policy_attachment" "rotation" {
   policy_arn = aws_iam_policy.rotation.arn
-  role       = aws_iam_role.rotation.id
+  role       = data.aws_iam_role.rotation.id
 }
 
 data "aws_iam_policy_document" "rotation_assume_role" {
@@ -222,10 +230,11 @@ data "aws_region" "this" {}
 data "aws_caller_identity" "this" {}
 
 locals {
-  account_arn      = "arn:aws:iam::${local.account_id}:root"
-  account_id       = data.aws_caller_identity.this.account_id
-  region           = data.aws_region.this.name
-  sid_suffix       = join("", regexall("[[:alnum:]]+", var.name))
-  read_principals  = coalesce(var.read_principals, [local.account_arn])
-  admin_principals = coalesce(var.admin_principals, [local.account_arn])
+  account_arn        = "arn:aws:iam::${local.account_id}:root"
+  account_id         = data.aws_caller_identity.this.account_id
+  region             = data.aws_region.this.name
+  sid_suffix         = join("", regexall("[[:alnum:]]+", var.name))
+  read_principals    = coalesce(var.read_principals, [local.account_arn])
+  admin_principals   = coalesce(var.admin_principals, [local.account_arn])
+  rotation_role_name = coalesce(var.rotation_role_name, "${var.name}-rotation")
 }

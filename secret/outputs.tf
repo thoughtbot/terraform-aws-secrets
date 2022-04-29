@@ -25,12 +25,12 @@ output "policy_json" {
 
 output "rotation_role_arn" {
   description = "ARN of the IAM role allowed to rotate this secret"
-  value       = aws_iam_role.rotation.arn
+  value       = data.aws_iam_role.rotation.arn
 }
 
 output "rotation_role_name" {
   description = "Name of the IAM role allowed to rotate this secret"
-  value       = aws_iam_role.rotation.name
+  value       = data.aws_iam_role.rotation.name
 }
 
 output "id" {
