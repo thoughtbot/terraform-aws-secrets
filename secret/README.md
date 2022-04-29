@@ -62,10 +62,6 @@ using the [secret rotation function module].
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.45 |
 
-## Modules
-
-No modules.
-
 ## Resources
 
 | Name | Type |
