@@ -93,6 +93,7 @@ using the [secret rotation function module].
 | <a name="input_initial_value"></a> [initial\_value](#input\_initial\_value) | Initial value for this secret | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name for this secret | `string` | n/a | yes |
 | <a name="input_read_principals"></a> [read\_principals](#input\_read\_principals) | Principals allowed to read the secret (default: current account) | `list(string)` | `null` | no |
+| <a name="input_readwrite_principals"></a> [readwrite\_principals](#input\_readwrite\_principals) | Principals allowed to both read and write secrets | `list(string)` | `[]` | no |
 | <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Tags to be applied to created resources | `map(string)` | `{}` | no |
 | <a name="input_rotation_role_name"></a> [rotation\_role\_name](#input\_rotation\_role\_name) | Override the name for the rotation role | `string` | `null` | no |
 | <a name="input_rotation_trust_policy"></a> [rotation\_trust\_policy](#input\_rotation\_trust\_policy) | Overrides for the rotation role trust policy | `string` | `null` | no |

@@ -32,6 +32,12 @@ variable "read_principals" {
   default     = null
 }
 
+variable "readwrite_principals" {
+  description = "Principals allowed to both read and write secrets"
+  type        = list(string)
+  default     = []
+}
+
 variable "resource_tags" {
   description = "Tags to be applied to created resources"
   type        = map(string)

@@ -42,6 +42,20 @@ data "aws_iam_policy_document" "secret" {
   }
 
   statement {
+    sid       = "AllowReadWrite"
+    resources = ["*"]
+    actions = [
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:PutSecretValue",
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = var.readwrite_principals
+    }
+  }
+
+  statement {
     sid       = "AllowRead"
     resources = ["*"]
     actions = [
@@ -133,6 +147,21 @@ data "aws_iam_policy_document" "key" {
       test     = "StringEquals"
       variable = "kms:ViaService"
       values   = ["secretsmanager.${local.region}.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid = "AllowReadWrite"
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*"
+    ]
+    resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = var.readwrite_principals
     }
   }
 }
