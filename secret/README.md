@@ -112,4 +112,5 @@ using the [secret rotation function module].
 | <a name="output_policy_json"></a> [policy\_json](#output\_policy\_json) | Policy json for consuming this secret |
 | <a name="output_rotation_role_arn"></a> [rotation\_role\_arn](#output\_rotation\_role\_arn) | ARN of the IAM role allowed to rotate this secret |
 | <a name="output_rotation_role_name"></a> [rotation\_role\_name](#output\_rotation\_role\_name) | Name of the IAM role allowed to rotate this secret |
+| <a name="output_secret_name"></a> [secret\_name](#output\_secret\_name) | Name of the created secret |
 <!-- END_TF_DOCS -->

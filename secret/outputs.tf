@@ -3,6 +3,11 @@ output "arn" {
   value       = aws_secretsmanager_secret.this.arn
 }
 
+output "id" {
+  description = "Id of the created secret"
+  value       = aws_secretsmanager_secret.this.id
+}
+
 output "kms_key_alias" {
   description = "Alias of the KMS key encrypting the secret"
   value       = aws_kms_alias.this.name
@@ -33,7 +38,7 @@ output "rotation_role_name" {
   value       = data.aws_iam_role.rotation.name
 }
 
-output "id" {
-  description = "Id of the created secret"
-  value       = aws_secretsmanager_secret.this.id
+output "secret_name" {
+  description = "Name of the created secret"
+  value       = aws_secretsmanager_secret.this.name
 }
