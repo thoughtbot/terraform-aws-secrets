@@ -41,17 +41,20 @@ data "aws_iam_policy_document" "secret" {
     }
   }
 
-  statement {
-    sid       = "AllowReadWrite"
-    resources = ["*"]
-    actions = [
-      "secretsmanager:DescribeSecret",
-      "secretsmanager:GetSecretValue",
-      "secretsmanager:PutSecretValue",
-    ]
-    principals {
-      type        = "AWS"
-      identifiers = var.readwrite_principals
+  dynamic "statement" {
+    for_each = length(var.readwrite_principals) > 0 ? [true] : []
+    content {
+      sid       = "AllowReadWrite"
+      resources = ["*"]
+      actions = [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:PutSecretValue",
+      ]
+      principals {
+        type        = "AWS"
+        identifiers = var.readwrite_principals
+      }
     }
   }
 
@@ -150,18 +153,22 @@ data "aws_iam_policy_document" "key" {
     }
   }
 
-  statement {
-    sid = "AllowReadWrite"
-    actions = [
-      "kms:Encrypt",
-      "kms:Decrypt",
-      "kms:ReEncrypt*",
-      "kms:GenerateDataKey*"
-    ]
-    resources = ["*"]
-    principals {
-      type        = "AWS"
-      identifiers = var.readwrite_principals
+  dynamic "statement" {
+    for_each = length(var.readwrite_principals) > 0 ? [true] : []
+
+    content {
+      sid = "AllowReadWrite"
+      actions = [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+      ]
+      resources = ["*"]
+      principals {
+        type        = "AWS"
+        identifiers = var.readwrite_principals
+      }
     }
   }
 }
