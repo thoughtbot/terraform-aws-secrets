@@ -11,7 +11,7 @@ resource "aws_secretsmanager_secret_policy" "this" {
 }
 
 data "aws_iam_policy_document" "secret" {
-  override_json = var.secret_policy
+  override_policy_documents = [var.secret_policy]
 
   statement {
     sid       = "AllowAdmin"
@@ -212,7 +212,7 @@ resource "aws_iam_role_policy_attachment" "rotation" {
 }
 
 data "aws_iam_policy_document" "rotation_assume_role" {
-  override_json = var.rotation_trust_policy
+  override_policy_documents = [var.rotation_trust_policy]
 
   statement {
     actions = ["sts:AssumeRole"]
