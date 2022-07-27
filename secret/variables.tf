@@ -50,16 +50,16 @@ variable "rotation_role_name" {
   default     = null
 }
 
-variable "rotation_trust_policy" {
-  description = "Overrides for the rotation role trust policy"
-  type        = string
-  default     = null
+variable "rotation_trust_policies" {
+  description = "Overrides for the rotation role trust policies"
+  type        = list(string)
+  default     = []
 }
 
-variable "secret_policy" {
-  description = "Overrides for the secret resource policy"
-  type        = string
-  default     = null
+variable "secret_policies" {
+  description = "Overrides for the secret resource policies"
+  type        = list(string)
+  default     = []
 }
 
 variable "trust_tags" {
