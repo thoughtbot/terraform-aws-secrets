@@ -96,8 +96,8 @@ using the [secret rotation function module].
 | <a name="input_readwrite_principals"></a> [readwrite\_principals](#input\_readwrite\_principals) | Principals allowed to both read and write secrets | `list(string)` | `[]` | no |
 | <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Tags to be applied to created resources | `map(string)` | `{}` | no |
 | <a name="input_rotation_role_name"></a> [rotation\_role\_name](#input\_rotation\_role\_name) | Override the name for the rotation role | `string` | `null` | no |
-| <a name="input_rotation_trust_policy"></a> [rotation\_trust\_policy](#input\_rotation\_trust\_policy) | Overrides for the rotation role trust policy | `string` | `null` | no |
-| <a name="input_secret_policy"></a> [secret\_policy](#input\_secret\_policy) | Overrides for the secret resource policy | `string` | `null` | no |
+| <a name="input_rotation_trust_policies"></a> [rotation\_trust\_policies](#input\_rotation\_trust\_policies) | Overrides for the rotation role trust policies | `list(string)` | `[]` | no |
+| <a name="input_secret_policies"></a> [secret\_policies](#input\_secret\_policies) | Overrides for the secret resource policies | `list(string)` | `[]` | no |
 | <a name="input_trust_tags"></a> [trust\_tags](#input\_trust\_tags) | Tags required on principals accessing the secret | `map(string)` | `{}` | no |
 
 ## Outputs
