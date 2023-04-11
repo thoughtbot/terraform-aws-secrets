@@ -3,6 +3,11 @@ output "arn" {
   value       = aws_secretsmanager_secret.this.arn
 }
 
+output "environment_variables" {
+  description = "Environment variables provided by this secret"
+  value       = local.env_vars
+}
+
 output "id" {
   description = "Id of the created secret"
   value       = aws_secretsmanager_secret.this.id
@@ -30,12 +35,12 @@ output "policy_json" {
 
 output "rotation_role_arn" {
   description = "ARN of the IAM role allowed to rotate this secret"
-  value       = data.aws_iam_role.rotation.arn
+  value       = join("", data.aws_iam_role.rotation[*].arn)
 }
 
 output "rotation_role_name" {
   description = "Name of the IAM role allowed to rotate this secret"
-  value       = data.aws_iam_role.rotation.name
+  value       = join("", data.aws_iam_role.rotation[*].name)
 }
 
 output "secret_name" {

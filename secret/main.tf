@@ -26,18 +26,22 @@ data "aws_iam_policy_document" "secret" {
     }
   }
 
-  statement {
-    sid       = "AllowRotation"
-    resources = ["*"]
-    actions = [
-      "secretsmanager:DescribeSecret",
-      "secretsmanager:GetSecretValue",
-      "secretsmanager:PutSecretValue",
-      "secretsmanager:UpdateSecretVersionStage"
-    ]
-    principals {
-      type        = "AWS"
-      identifiers = [data.aws_iam_role.rotation.arn]
+  dynamic "statement" {
+    for_each = data.aws_iam_role.rotation
+
+    content {
+      sid       = "AllowRotation"
+      resources = ["*"]
+      actions = [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:PutSecretValue",
+        "secretsmanager:UpdateSecretVersionStage"
+      ]
+      principals {
+        type        = "AWS"
+        identifiers = [statement.arn]
+      }
     }
   }
 
@@ -118,18 +122,22 @@ data "aws_iam_policy_document" "key" {
     }
   }
 
-  statement {
-    sid = "AllowRotation"
-    actions = [
-      "kms:Encrypt",
-      "kms:Decrypt",
-      "kms:ReEncrypt*",
-      "kms:GenerateDataKey*"
-    ]
-    resources = ["*"]
-    principals {
-      type        = "AWS"
-      identifiers = [data.aws_iam_role.rotation.arn]
+  dynamic "statement" {
+    for_each = data.aws_iam_role.rotation
+
+    content {
+      sid = "AllowRotation"
+      actions = [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+      ]
+      resources = ["*"]
+      principals {
+        type        = "AWS"
+        identifiers = [statement.arn]
+      }
     }
   }
 
@@ -201,14 +209,17 @@ resource "aws_iam_role" "rotation" {
 }
 
 data "aws_iam_role" "rotation" {
-  name = local.rotation_role_name
-
+  count      = var.create_rotation_policy ? 1 : 0
   depends_on = [aws_iam_role.rotation]
+
+  name = local.rotation_role_name
 }
 
 resource "aws_iam_role_policy_attachment" "rotation" {
-  policy_arn = aws_iam_policy.rotation.arn
-  role       = data.aws_iam_role.rotation.id
+  count = var.create_rotation_policy ? 1 : 0
+
+  policy_arn = aws_iam_policy.rotation[count.index].arn
+  role       = data.aws_iam_role.rotation[count.index].id
 }
 
 data "aws_iam_policy_document" "rotation_assume_role" {
@@ -224,6 +235,8 @@ data "aws_iam_policy_document" "rotation_assume_role" {
 }
 
 resource "aws_iam_policy" "rotation" {
+  count = var.create_rotation_policy ? 1 : 0
+
   name   = "${var.name}-rotation"
   policy = data.aws_iam_policy_document.rotation.json
   tags   = var.resource_tags
@@ -273,4 +286,9 @@ locals {
   read_principals    = coalesce(var.read_principals, [local.account_arn])
   admin_principals   = coalesce(var.admin_principals, [local.account_arn])
   rotation_role_name = coalesce(var.rotation_role_name, "${var.name}-rotation")
+
+  env_vars = [
+    for key in try(keys(jsondecode(var.initial_value)), []) :
+    key if upper(key) == key
+  ]
 }

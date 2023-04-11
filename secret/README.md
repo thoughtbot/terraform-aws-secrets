@@ -88,6 +88,7 @@ using the [secret rotation function module].
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_admin_principals"></a> [admin\_principals](#input\_admin\_principals) | Principals allowed to peform admin actions (default: current account) | `list(string)` | `null` | no |
+| <a name="input_create_rotation_policy"></a> [create\_rotation\_policy](#input\_create\_rotation\_policy) | Set to false to disable creation of an IAM policy for rotation | `bool` | `true` | no |
 | <a name="input_create_rotation_role"></a> [create\_rotation\_role](#input\_create\_rotation\_role) | Set to false to use an existing IAM role for rotation | `bool` | `true` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description for this secret | `string` | `null` | no |
 | <a name="input_initial_value"></a> [initial\_value](#input\_initial\_value) | Initial value for this secret | `string` | n/a | yes |
@@ -105,6 +106,7 @@ using the [secret rotation function module].
 | Name | Description |
 |------|-------------|
 | <a name="output_arn"></a> [arn](#output\_arn) | ARN of the created secret |
+| <a name="output_environment_variables"></a> [environment\_variables](#output\_environment\_variables) | Environment variables provided by this secret |
 | <a name="output_id"></a> [id](#output\_id) | Id of the created secret |
 | <a name="output_kms_key_alias"></a> [kms\_key\_alias](#output\_kms\_key\_alias) | Alias of the KMS key encrypting the secret |
 | <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | Alias of the KMS key encrypting the secret |
