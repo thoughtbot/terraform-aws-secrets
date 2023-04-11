@@ -56,6 +56,7 @@ variables for permissions as the [generic secret module].
 | Name | Description |
 |------|-------------|
 | <a name="output_arn"></a> [arn](#output\_arn) | ARN of the created secret |
+| <a name="output_environment_variables"></a> [environment\_variables](#output\_environment\_variables) | Environment variables provided by this secret |
 | <a name="output_id"></a> [id](#output\_id) | Id of the created secret |
 | <a name="output_kms_key_alias"></a> [kms\_key\_alias](#output\_kms\_key\_alias) | Alias of the KMS key encrypting the secret |
 | <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | Alias of the KMS key encrypting the secret |
