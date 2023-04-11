@@ -1,0 +1,85 @@
+name: Terraform
+
+on:
+  workflow_call:
+    inputs:
+      module:
+        type: string
+        required: true
+
+jobs:
+
+  checkfmt:
+    name: Format
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.module }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Check format
+      run: make checkfmt
+
+  validate:
+    name: Validate
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.module }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Validate
+      run: make validate
+
+  docs:
+    name: Docs
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.module }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Docs
+      uses: terraform-docs/gh-actions@v1.0.0
+      with:
+        git-push: true
+        output-file: README.md
+        output-method: inject
+        working-dir: ${{ inputs.module }}
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.module }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v3
+      with:
+        tflint_version: v0.38.1
+
+    - name: Lint
+      run: make lint
