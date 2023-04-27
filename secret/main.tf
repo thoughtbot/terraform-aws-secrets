@@ -288,7 +288,7 @@ locals {
   rotation_role_name = coalesce(var.rotation_role_name, "${var.name}-rotation")
 
   env_vars = nonsensitive([
-    for key in try(keys(jsondecode(var.initial_value)), []) :
+    for key in try(keys(jsondecode(sensitive(var.initial_value))), []) :
     key if upper(key) == key
   ])
 }
