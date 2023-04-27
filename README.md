@@ -7,6 +7,7 @@ using AWS Secrets Manager.
 
 * [secret](./secret/README.md)
 * [secret-rotation-function](./secret-rotation-function/README.md)
+* [random-secret](./random-secret/README.md)
 * [read-secret-policy](./read-secret-policy/README.md)
 * [user-managed-secret](./user-managed-secret/README.md)
 
