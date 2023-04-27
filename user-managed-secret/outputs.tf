@@ -5,7 +5,7 @@ output "arn" {
 
 output "environment_variables" {
   description = "Environment variables provided by this secret"
-  value       = module.secret.environment_variables
+  value       = var.environment_variables
 }
 
 output "id" {
