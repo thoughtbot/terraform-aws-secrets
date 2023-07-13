@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "secret" {
       ]
       principals {
         type        = "AWS"
-        identifiers = [statement.arn]
+        identifiers = [statement.value.arn]
       }
     }
   }
@@ -136,7 +136,7 @@ data "aws_iam_policy_document" "key" {
       resources = ["*"]
       principals {
         type        = "AWS"
-        identifiers = [statement.arn]
+        identifiers = [statement.value.arn]
       }
     }
   }
