@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "secret" {
       ]
       principals {
         type        = "AWS"
-        identifiers = [statement.arn]
+        identifiers = [statement.value.arn]
       }
     }
   }
@@ -136,7 +136,7 @@ data "aws_iam_policy_document" "key" {
       resources = ["*"]
       principals {
         type        = "AWS"
-        identifiers = [statement.arn]
+        identifiers = [statement.value.arn]
       }
     }
   }
@@ -287,8 +287,8 @@ locals {
   admin_principals   = coalesce(var.admin_principals, [local.account_arn])
   rotation_role_name = coalesce(var.rotation_role_name, "${var.name}-rotation")
 
-  env_vars = nonsensitive([
+  env_vars = [
     for key in try(keys(jsondecode(var.initial_value)), []) :
     key if upper(key) == key
-  ])
+  ]
 }
