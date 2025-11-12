@@ -281,7 +281,7 @@ data "aws_caller_identity" "this" {}
 locals {
   account_arn        = "arn:aws:iam::${local.account_id}:root"
   account_id         = data.aws_caller_identity.this.account_id
-  region             = data.aws_region.this.name
+  region             = data.aws_region.this.region
   sid_suffix         = join("", regexall("[[:alnum:]]+", var.name))
   read_principals    = coalesce(var.read_principals, [local.account_arn])
   admin_principals   = coalesce(var.admin_principals, [local.account_arn])
