@@ -3,6 +3,14 @@ resource "aws_secretsmanager_secret" "this" {
   kms_key_id  = aws_kms_key.this.arn
   name        = var.name
   tags        = var.resource_tags
+
+  dynamic "replica" {
+    for_each = var.replica_regions
+    content {
+      region     = replica.value.region
+      kms_key_id = replica.value.kms_key_id
+    }
+  }
 }
 
 resource "aws_secretsmanager_secret_policy" "this" {
