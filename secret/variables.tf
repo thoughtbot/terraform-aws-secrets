@@ -4,6 +4,16 @@ variable "admin_principals" {
   default     = null
 }
 
+variable "replica_regions" {
+  description = "List of regions to replicate the secret to. Each element must have 'region' and optionally 'kms_key_id'"
+  type = list(object({
+    region     = string
+    kms_key_id = optional(string)
+  }))
+  default = []
+}
+
+
 variable "create_rotation_policy" {
   description = "Set to false to disable creation of an IAM policy for rotation"
   type        = bool
